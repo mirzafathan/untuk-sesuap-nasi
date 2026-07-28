@@ -2,9 +2,7 @@
 
 A Python 3.11+ crawler that checks 14 company career sites, filters engineering titles, summarizes new postings through OpenRouter, sends compact alerts to Telegram, and stores their composite IDs in `seen_jobs.json`.
 
-## Monitored companies
-
-Shopee, Mekari, Blibli, StaffAny, Amartha, ByteDance, Tiket, Stockbit, Traveloka, DANA, Telkom, Grab, GoTo, and Gojek.
+## Monitored roles
 
 Only titles containing one of these roles or an unambiguous spelling variant are included, using case-insensitive partial matching:
 
