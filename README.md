@@ -135,7 +135,7 @@ Branch protection rules must permit the GitHub Actions token to push the state c
 
 ## Maintenance
 
-Saved browser fragments live in `inspect-elements-outerhtml/`, their parser contract tests live in `tests/test_scrapers.py`, detail-extraction contracts live in the `tests/test_job_details_*.py` files, and end-to-end pagination contracts live in `tests/test_pagination.py`. When a maintenance alert arrives:
+Local browser fragments may be kept in the ignored `inspect-elements-outerhtml/` directory. CI-safe parser contracts use inline or mocked responses in `tests/test_scrapers.py`, detail-extraction contracts live in the `tests/test_job_details_*.py` files, and end-to-end pagination contracts live in `tests/test_pagination.py`. When a maintenance alert arrives:
 
 1. Capture fresh outerHTML or inspect the site's current public data response.
 2. Add or update the failing fixture test first.

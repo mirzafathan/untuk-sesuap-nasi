@@ -1,5 +1,3 @@
-from pathlib import Path
-
 import httpx
 import pytest
 
@@ -20,13 +18,6 @@ from scrapers.stockbit import StockbitScraper
 from scrapers.telkom import TelkomScraper
 from scrapers.tiket import TiketScraper
 from scrapers.traveloka import TravelokaScraper
-
-
-FIXTURES = Path(__file__).parents[1] / "inspect-elements-outerhtml"
-
-
-def fixture(name: str) -> str:
-    return (FIXTURES / f"{name}.html").read_text(encoding="utf-8")
 
 
 def test_base_scraper_is_abstract() -> None:
@@ -65,43 +56,6 @@ def test_scraper_without_detail_contract_fails_explicitly() -> None:
 
     with pytest.raises(JobDetailStructureChangedError, match="not implemented"):
         ListingOnlyScraper().extract_job_details(job)
-
-
-@pytest.mark.parametrize(
-    ("scraper", "name", "expected_count"),
-    [
-        (MekariScraper(), "mekari", 0),
-        (StaffanyScraper(), "staffany", 1),
-        (AmarthaScraper(), "amartha", 2),
-        (ByteDanceScraper(), "bytedance", 1),
-        (TiketScraper(), "tiket", 2),
-        (StockbitScraper(), "stockbit", 8),
-        (TravelokaScraper(), "traveloka", 4),
-        (TelkomScraper(), "telkom", 0),
-        (GrabScraper(), "grab", 9),
-        (GoToScraper(), "goto", 0),
-        (GojekScraper(), "gojek", 0),
-    ],
-)
-def test_saved_outer_html_contracts(scraper, name: str, expected_count: int) -> None:
-    jobs = scraper.parse_html(fixture(name), f"https://example.test/{name}")
-
-    assert len(jobs) == expected_count
-    assert all(job.company.casefold() == scraper.company.casefold() for job in jobs)
-    assert all(job.url.startswith("http") for job in jobs)
-
-
-@pytest.mark.parametrize(
-    ("scraper", "name"),
-    [
-        (ShopeeScraper(), "shopee"),
-        (BlibliScraper(), "blibli"),
-        (DanaScraper(), "dana"),
-    ],
-)
-def test_incomplete_saved_dom_raises_maintenance_error(scraper, name: str) -> None:
-    with pytest.raises(DOMStructureChangedError):
-        scraper.parse_html(fixture(name), f"https://example.test/{name}")
 
 
 @pytest.mark.parametrize(
